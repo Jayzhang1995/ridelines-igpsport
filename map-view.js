@@ -5,11 +5,14 @@ const state = { rides: [], year: 'all', month: 'all', zoom: 3, center: [35, 105]
 let renderPending = false;
 const map = $('map'), canvas = $('heat'), tiles = $('tiles');
 let basemap = null;
-function missingCircleIcon(id) {
+function fallbackStyleImage(id) {
   const match = /^circle-(\d{1,2})$/.exec(id);
-  if (!match) return null;
+  // OpenFreeMap's dark style references sprite entries that are not always supplied.
+  // An absent icon was already invisible; registering a transparent pixel prevents
+  // MapLibre from reporting it as a fatal extension error.
+  if (!match) return { width: 1, height: 1, data: new Uint8ClampedArray(4) };
   const size = Number(match[1]);
-  if (size < 3 || size > 32) return null;
+  if (size < 3 || size > 32) return { width: 1, height: 1, data: new Uint8ClampedArray(4) };
   const data = new Uint8ClampedArray(size * size * 4);
   const radius = (size - 1) / 2;
   for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) {
@@ -32,8 +35,7 @@ try {
     preserveDrawingBuffer: true
   });
   basemap.setMissingStyleImageResolver(id => {
-    const icon = missingCircleIcon(id);
-    if (icon) basemap.addImage(id, icon);
+    basemap.addImage(id, fallbackStyleImage(id));
   });
   basemap.on('error', error => {
     const detail = error.error || error;
