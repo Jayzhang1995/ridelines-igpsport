@@ -4,6 +4,12 @@
 
 > 这是独立的非官方项目，与 iGPSPORT 没有关联。它依赖 iGPSPORT 网页当前的内部接口；网站更新后，同步功能可能需要调整。当前仍是原型，尚未上架 Chrome 网上应用店。
 
+## 界面示例
+
+![RIDELINES 骑行轨迹热力图示例，图片带水印](assets/ridelines-demo-watermarked.png)
+
+截图展示了登录引导、年份和月份筛选，以及轨迹热力图。图片仅用于展示界面；其中的路线与统计数字不随项目提供。
+
 ## 本地试用
 
 1. 在桌面版 Chrome 打开 `chrome://extensions`，开启“开发者模式”。
@@ -40,4 +46,8 @@
 
 可用 `node --test folder-store.test.mjs` 运行本地文件读写测试。此测试不需要真实账号或轨迹数据。
 
-本仓库暂未指定开源许可证。代码可供查看和本地试用；再分发或改编的授权将在选定许可证后明确。
+## 开源协议
+
+本项目原创代码采用 [MIT License](LICENSE)，Copyright (c) 2026 Jayzhang1995。你可以依照协议使用、修改和分发，但需保留版权与许可声明。
+
+`vendor/` 中的 MapLibre GL JS 使用其原有许可证，详见 [vendor/MAPLIBRE-LICENSE.txt](vendor/MAPLIBRE-LICENSE.txt)。截图中的底图数据与地图服务不因本项目的 MIT 许可而改变其各自的使用条款。
