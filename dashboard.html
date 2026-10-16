@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111713">
+  <title>RIDELINES · 本地骑行地图</title>
+  <link rel="stylesheet" href="vendor/maplibre-gl.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+  <div class="file-open-notice" role="status">
+    <div class="file-open-panel">
+      <span class="file-open-label">RIDELINES / 页面预览</span>
+      <h1>请从 Chrome 扩展打开</h1>
+      <p>当前是直接打开的 HTML 预览，按钮无法连接 iGPSPORT。请点击 Chrome 工具栏中的 <strong>RIDELINES · iGPSPORT 骑行地图</strong> 扩展图标，进入可同步的页面。</p>
+      <p class="file-open-path">可在地址栏输入 <code>chrome://extensions</code> 检查扩展是否已启用。</p>
+    </div>
+  </div>
+  <div class="app">
+    <div class="rail">
+      <header class="brand"><span class="mark" aria-hidden="true"><i></i><i></i><i></i></span><div><strong>RIDELINES</strong><small>LOCAL CYCLING ATLAS / 本地骑行地图</small></div></header>
+      <div class="side-scroll">
+        <div class="eyebrow setup-heading"><span class="pin yellow"></span> SETUP / 使用步骤</div>
+        <div class="setup-grid">
+        <section class="connect-panel igps-panel">
+          <div class="eyebrow"><span class="pin orange"></span> STEP 1 / 登录 iGPSPORT</div>
+          <div class="source-row"><div class="source-logo igps-logo">i</div><div><b>连接 iGPSPORT</b><small id="loginStatus">正在检查登录状态…</small></div><span id="igpsDot" class="state-dot"></span></div>
+          <button id="openIgps" class="primary-action" type="button">打开 iGPSPORT 登录 <span>↗</span></button>
+          <p id="loginHint" class="setup-hint">登录后保留 iGPSPORT 标签页；已打开时会直接切换过去。</p>
+        </section>
+        <section class="connect-panel storage-panel">
+          <div class="eyebrow"><span class="pin yellow"></span> STEP 2 / 选择保存位置</div>
+          <button id="pickFolder" class="sub-action" type="button">选择本地文件夹 <span>↗</span></button>
+          <p id="folderName" class="setup-hint">尚未选择文件夹</p>
+          <p class="setup-hint">GPX 和地图索引仅存在所选文件夹。</p>
+        </section>
+        <section class="connect-panel sync-panel">
+          <div class="eyebrow sync-step"><span class="pin orange"></span> STEP 3 / 同步与绘图</div>
+          <button id="syncNow" class="primary-action sync-action" type="button" disabled>检查新骑行 <span>↻</span></button>
+          <div id="setupGuide" class="setup-guide">下一步：登录 iGPSPORT。</div>
+          <div id="syncStatus" class="job-status" role="status" aria-live="polite">先登录 iGPSPORT 并选择文件夹。</div>
+        </section>
+        </div>
+        <section class="filter-strip" aria-label="轨迹筛选和统计">
+          <div class="filter-title"><div class="eyebrow"><span class="pin orange"></span> TIME FILTER / 时间筛选</div><div class="filter-head"><h2>探索轨迹</h2><span id="periodLabel">全部时间</span></div></div>
+          <div class="filter-years"><div class="filter-caption">年份 / YEAR</div>
+        <div id="yearList" class="year-list" role="group" aria-label="年份"></div>
+          </div>
+          <div class="filter-months"><div class="month-heading">月份 <span>MONTH</span></div>
+        <div id="monthList" class="month-list" role="group" aria-label="月份"></div>
+          </div>
+          <div class="period-stats"><div class="eyebrow"><span class="pin yellow"></span> 当前记录</div><div class="stat-line"><div class="big-stat"><strong id="rideCount">0</strong><span>次骑行</span></div><div class="stat-grid"><div><strong id="distance">0</strong><span>公里</span></div><div><strong id="trackCount">0</strong><span>有轨迹</span></div></div></div><div id="missingHint" class="missing-hint"></div></div>
+        </section>
+      </div>
+      <footer class="rail-foot">底图 <a href="https://openfreemap.org/" target="_blank" rel="noreferrer">OpenFreeMap</a> · © <a href="https://openmaptiles.org/" target="_blank" rel="noreferrer">OpenMapTiles</a> · 数据 © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap</a><br>本地文件夹存储 · 无需运行服务</footer>
+    </div>
+    <main class="main">
+      <div class="topbar"><div><span class="topbar-kicker">HEATMAP / 轨迹热力图</span><h1 id="mapTitle">每一程，都有迹可循。</h1></div><div class="topbar-actions"><button id="fitButton" title="定位到轨迹">定位轨迹</button><button id="downloadButton" title="保存当前地图">导出图片 ↓</button></div></div>
+      <div id="map" class="map" aria-label="骑行轨迹地图">
+        <div id="tiles" class="tiles"></div><canvas id="heat"></canvas>
+        <div id="basemapStatus" class="basemap-status hidden" role="status">底图暂不可用，轨迹仍可查看</div>
+        <div id="empty" class="empty"><span class="empty-cross" aria-hidden="true">＋</span><strong>你的地图，等第一条轨迹。</strong><p>登录 iGPSPORT 并选择文件夹后，将自动同步骑行。</p></div>
+        <div class="map-tag"><span class="pulse"></span><span id="mapTag">ALL RIDES</span></div>
+        <div class="map-controls"><button id="zoomIn" aria-label="放大">+</button><button id="zoomOut" aria-label="缩小">−</button></div>
+        <div class="map-scale"><span class="scale-line"></span> 滚轮缩放 · 拖动画布</div>
+      </div>
+      <div class="bottom-bar"><div class="legend"><b>轨迹密度</b><span>少</span><i class="legend-ramp"></i><span>多</span></div><div id="bottomInfo">选择年份与月份，查看那段时间走过的路。</div></div>
+    </main>
+  </div>
+  <script src="preview-guard.js"></script>
+  <script type="module" src="dashboard.js"></script>
+</body>
+</html>

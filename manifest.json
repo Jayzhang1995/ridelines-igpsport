@@ -1,0 +1,11 @@
+{
+  "manifest_version": 3,
+  "name": "RIDELINES · iGPSPORT 骑行地图",
+  "description": "在本机下载 iGPSPORT 轨迹并绘制热力图，无需本地服务。",
+  "version": "0.1.2",
+  "minimum_chrome_version": "116",
+  "permissions": ["scripting"],
+  "host_permissions": ["https://app.igpsport.cn/*"],
+  "background": { "service_worker": "background.js" },
+  "action": { "default_title": "打开 RIDELINES 骑行地图" }
+}

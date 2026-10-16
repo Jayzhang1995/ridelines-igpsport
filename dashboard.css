@@ -1,0 +1,71 @@
+.app{display:flex;flex-direction:column;height:100vh;min-height:680px}
+.rail{display:block;flex:none;min-height:0;height:auto;border-right:0;border-bottom:1px solid var(--line)}
+.brand{height:52px;padding:9px 24px}
+.brand strong{font-size:24px}
+.side-scroll{display:block;overflow:visible;max-height:none;padding:7px 24px 8px}
+.setup-heading{margin-bottom:5px}
+.setup-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.connect-panel{margin:0;min-width:0;min-height:102px;padding:8px 12px}
+.connect-panel .eyebrow{margin:0 0 5px}
+.source-row{margin-bottom:5px;gap:9px}
+.source-logo,.source-row b{display:none}
+.source-row small{font-size:10px;margin:0}
+.primary-action,.sub-action{min-height:34px;padding:6px 10px;font-size:11px}
+.storage-panel .sub-action{margin:0}
+.setup-hint{margin:4px 0 0;font-size:10px;line-height:1.4}
+.sync-action{margin:0}
+.setup-guide{margin-top:5px;color:#d4e0d3;font-size:10px;line-height:1.4}
+.rail .job-status{min-height:0;margin-top:4px;font-size:10px;line-height:1.4}
+.filter-strip{display:grid;grid-template-columns:170px minmax(150px,auto) minmax(320px,1fr) 230px;align-items:center;gap:16px;margin-top:7px;padding-top:7px;border-top:1px solid var(--line)}
+.filter-title,.filter-years,.filter-months,.period-stats{min-width:0}
+.filter-head{display:block;margin:4px 0 0}
+.filter-head h2{font-size:24px;line-height:1}
+.filter-head span{display:block;margin-top:3px}
+.filter-caption,.month-heading{height:16px;margin:0 0 6px;color:#cbd6cc;font:10px var(--mono)}
+.month-heading{justify-content:start;gap:7px}
+.year-list,.month-list{display:flex;flex-wrap:wrap;gap:5px}
+.year-list button{padding:5px 8px}
+.month-list button{width:28px;height:27px}
+.period-stats{border-left:1px solid var(--line);padding-left:13px}
+.period-stats .eyebrow{margin-bottom:2px}
+.stat-line{display:flex;align-items:end;gap:16px}
+.big-stat{margin:0;gap:5px;white-space:nowrap}
+.big-stat strong{font-size:38px}
+.big-stat span{font-size:10px}
+.stat-grid{flex:1;min-width:0;gap:6px}
+.stat-grid>div{padding-top:4px}
+.stat-grid strong{font-size:16px}
+.stat-grid span{font-size:9px}
+.missing-hint{margin-top:3px}
+.rail-foot{padding:0 24px 4px;border:0;font-size:9px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rail-foot br{display:none}
+.main{height:auto;min-height:0;flex:1}
+.topbar{min-height:62px;padding:10px 24px}
+.topbar h1{font-size:25px}
+.map{min-height:280px}
+.bottom-bar{height:38px;flex:none;padding:0 24px}
+.basemap-status{position:absolute;top:60px;right:18px;z-index:3;padding:9px 12px;background:#142018ed;border:1px solid #ff6a2a;color:#ffe1c8;font-size:11px;pointer-events:none}
+@media(max-width:1100px){
+  .filter-strip{grid-template-columns:140px minmax(130px,auto) minmax(250px,1fr) 195px;gap:10px}
+  .period-stats{padding-left:10px}
+  .stat-line{gap:9px}
+  .big-stat strong{font-size:33px}
+}
+@media(max-width:760px){
+  .app{min-height:700px}
+  .brand{height:55px;padding:10px 16px}
+  .side-scroll{padding:9px 16px 11px}
+  .setup-grid{display:grid;grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:minmax(230px,74vw);overflow-x:auto;padding-bottom:4px;scroll-snap-type:x proximity}
+  .connect-panel{min-height:143px;scroll-snap-align:start}
+  .filter-strip{display:flex;align-items:stretch;overflow-x:auto;gap:12px;padding-bottom:5px}
+  .filter-title{flex:0 0 120px}
+  .filter-years{flex:0 0 135px}
+  .filter-months{flex:0 0 250px}
+  .period-stats{flex:0 0 185px}
+  .rail-foot{display:none}
+  .main{height:auto;min-height:0}
+  .topbar{min-height:64px;padding:10px 16px}
+  .topbar h1{font-size:21px}
+  .map{min-height:300px}
+  .bottom-bar{padding:0 16px}
+}
