@@ -5,6 +5,21 @@ const state = { rides: [], year: 'all', month: 'all', zoom: 3, center: [35, 105]
 let renderPending = false;
 const map = $('map'), canvas = $('heat'), tiles = $('tiles');
 let basemap = null;
+function missingCircleIcon(id) {
+  const match = /^circle-(\d{1,2})$/.exec(id);
+  if (!match) return null;
+  const size = Number(match[1]);
+  if (size < 3 || size > 32) return null;
+  const data = new Uint8ClampedArray(size * size * 4);
+  const radius = (size - 1) / 2;
+  for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) {
+    const offset = (y * size + x) * 4;
+    const alpha = Math.max(0, Math.min(255, Math.round((radius + .5 - Math.hypot(x - radius, y - radius)) * 255)));
+    data[offset] = data[offset + 1] = data[offset + 2] = 255;
+    data[offset + 3] = alpha;
+  }
+  return { width: size, height: size, data };
+}
 try {
   setWorkerUrl(new URL('./vendor/maplibre-gl-worker.mjs', import.meta.url).href);
   basemap = new Map({
@@ -16,8 +31,14 @@ try {
     attributionControl: false,
     preserveDrawingBuffer: true
   });
+  basemap.setMissingStyleImageResolver(id => {
+    const icon = missingCircleIcon(id);
+    if (icon) basemap.addImage(id, icon);
+  });
   basemap.on('error', error => {
-    console.warn('底图加载失败', error.error || error);
+    const detail = error.error || error;
+    if (/Image "[^"]+" could not be loaded/.test(String(detail?.message || detail))) return;
+    console.warn('底图加载失败', detail);
     $('basemapStatus').classList.remove('hidden');
   });
   basemap.on('load', () => $('basemapStatus').classList.add('hidden'));
